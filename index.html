@@ -107,8 +107,8 @@ function initPlayer() {
 }
 
 // --- Physics ---
-const GRAVITY = () => canvas.height * 0.032;
-const JUMP_V  = () => -canvas.height * 0.068;
+const GRAVITY = () => canvas.height * 0.002;
+const JUMP_V  = () => -canvas.height * 0.032;
 
 function jump() {
   if (state === 'start') { startGame(); return; }
@@ -148,8 +148,8 @@ function spawnPlatform() {
 function spawnObstacle() {
   const types = ['cactus', 'spike', 'block'];
   const t = types[Math.floor(Math.random() * types.length)];
-  const bw = W(0.025 + Math.random() * 0.02);
-  const bh = H(0.04 + Math.random() * 0.05);
+  const bw = W(0.04 + Math.random() * 0.025);
+  const bh = H(0.06 + Math.random() * 0.07);
   obstacles.push({ x: W(1.05), y: GROUND - bh, w: bw, h: bh, type: t });
 }
 
@@ -253,14 +253,14 @@ function update() {
     player.y += player.vy;
   }
 
-  // Ground collision
-  if (player.y + player.h >= GROUND) {
+  // Ground collision (skip when dead so the death-fall can progress)
+  if (!player.dead && player.y + player.h >= GROUND) {
     player.y = GROUND - player.h;
     player.vy = 0;
     player.onGround = true;
     player.jumpCount = 0;
-    player.squish = 0.75; // squash on land
-  } else {
+    player.squish = 0.75;
+  } else if (!player.dead) {
     player.onGround = false;
   }
 
@@ -276,7 +276,7 @@ function update() {
 
   // Platform collision
   player.onPlatform = false;
-  platforms.forEach(p => {
+  if (!player.dead) platforms.forEach(p => {
     // Only snap on top
     if (player.vy >= 0 &&
         player.x + player.w * 0.8 > p.x &&
