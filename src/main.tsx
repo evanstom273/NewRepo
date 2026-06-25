@@ -11,6 +11,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, lazy: () => import('./pages/dashboard') },
       { path: 'projects', lazy: () => import('./pages/projects') },
+      { path: 'images', lazy: () => import('./pages/images') },
       { path: 'settings', lazy: () => import('./pages/settings') },
     ],
   },
