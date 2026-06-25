@@ -1,4 +1,4 @@
-import { Bell, Command, FolderKanban, Home, Menu, Search, Settings, Sparkles, X } from 'lucide-react';
+import { Bell, Command, FolderKanban, Home, Images, Menu, Search, Settings, Sparkles, X } from 'lucide-react';
 import { useState } from 'react';
 import { NavLink, Outlet } from 'react-router';
 import { Button } from './components/ui/button';
@@ -7,6 +7,7 @@ import { cn } from './lib/utils';
 const navigation = [
   { name: 'Overview', href: '/', icon: Home },
   { name: 'Projects', href: '/projects', icon: FolderKanban },
+  { name: 'Images', href: '/images', icon: Images },
   { name: 'Settings', href: '/settings', icon: Settings },
 ];
 
