@@ -1,5 +1,5 @@
 import { ImagePlus, Trash2, Upload, X } from 'lucide-react';
-import { type ChangeEvent, type DragEvent, useEffect, useRef, useState } from 'react';
+import { type ChangeEvent, type DragEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
 import { Card, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
@@ -30,13 +30,13 @@ export function Component() {
   const [isBusy, setIsBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function refreshImages() {
+  const refreshImages = useCallback(async () => {
     setRecords(await listImages());
-  }
+  }, []);
 
   useEffect(() => {
     refreshImages().catch(() => setError('Could not load saved images from this browser.'));
-  }, []);
+  }, [refreshImages]);
 
   useEffect(() => {
     const nextPreviews = records.map((record) => ({
@@ -190,7 +190,7 @@ export function Component() {
             <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
               {previews.map((preview) => (
                 <article key={preview.record.id} className="group overflow-hidden rounded-lg border border-white/10 bg-slate-950/45">
-                  <button className="block aspect-[4/3] w-full bg-white/[0.03]" onClick={() => setSelected(preview)}>
+                  <button className="block aspect-[4/3] w-full border-0 bg-white/[0.03] p-0" onClick={() => setSelected(preview)}>
                     <img className="h-full w-full object-cover" src={preview.url} alt={preview.record.name} />
                   </button>
                   <div className="space-y-3 p-3">
